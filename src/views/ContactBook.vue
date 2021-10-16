@@ -102,7 +102,7 @@ export default {
             }
         },
         gotoAddContact(){
-            // this.$router.push('/add')
+            this.$router.push('/add')
         },
         async searchName(){
             const [error, response] = await this.handle(ContactService.findByName(this.nameToSearch))
