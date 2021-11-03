@@ -35,8 +35,9 @@ export default {
             if(error){
                 console.log(error)
             }else{
-                this.contact = response.data[0]
+                this.contact = response.data
                 console.log(response.data)
+                console.log("ThanhCong")
             }
         },
         async updateContact(data){

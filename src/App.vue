@@ -2,15 +2,39 @@
   <div id="app">
         <nav class="navbar navbar-expand navbar-dark bg-dark">
             <a href="/" class="navbar-brand">Ứng dụng Quản lý danh bạ</a>
-            <div class="mr-auto navbar-nav">
+            <div v-if="currentUser" class="mr-auto navbar-nav">
                 <li class="nav-item">
                   <router-link to='/contactbook' class='nav-link'>
                   Danh bạ <i class='fas fa-address-book'></i>
                   </router-link>
                 </li>
             </div>
+            <!-- Router link Login and Signup -->
+            <div v-if="!currentUser" class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <router-link to="/register" class="nav-link">
+                Đăng ký
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <router-link to="/login" class="nav-link">
+                Đăng nhập   
+                </router-link>
+              </li>
+            </div>
+            <!-- Router link Profile and Logout -->
+            <div v-if="currentUser" class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <router-link to="/profile" class="nav-link">
+              {{ currentUser.username }}
+              </router-link>
+            </li>
+              <li class="nav-item">
+              <a class="nav-link" @click.prevent="logout"> Đăng xuất </a>
+            </li>
+            </div>
         </nav>
-
+        
         <div class="container mt-3">
            <router-view/>
         </div>
@@ -19,20 +43,35 @@
 
 <script>
 
+
+import {mapGetters, mapMutations} from 'vuex'
+
 export default {
-  name: 'App',
-  components: {
+  name: "App",
+  data(){
+    return {
+     
+    }
+  },
+  methods: {
+    logout(){
+      this.$store.commit('logout')
+      this.$router.push('login')
+    },
+    ...mapMutations([
+      "initAuthState"
+    ])
+  },
+  computed: {
+    ...mapGetters({
+      currentUser : 'loggedInUser'
+    })
+  },
+  mounted(){
+    this.initAuthState()
   }
-}
+};
 </script>
 
 <style>
-/* #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-} */
 </style>
